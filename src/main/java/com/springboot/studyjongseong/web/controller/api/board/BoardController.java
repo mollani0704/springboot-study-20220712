@@ -8,20 +8,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springboot.studyjongseong.service.board.BoardService;
+import com.springboot.studyjongseong.web.dto.board.CreateBoardReqDto;
+
+import lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping("/api/v1/board")
+@RequiredArgsConstructor
 public class BoardController {
+	
+	private final BoardService boardService;
 	
 	//게시글 작성
 	@PostMapping("/content")
-	public ResponseEntity<?> addBoard(@RequestParam("title") String title) {
-		System.out.println("게시글 작성 요청");
-		System.out.println("title: " + title);
-		HttpHeaders headers = new HttpHeaders();
+	public ResponseEntity<?> addBoard(CreateBoardReqDto createBoardReqDto) {
 		
-		headers.set("Content-type", "text/html;charset=utf-8");
+		boolean responseData = false;
 		
-		return ResponseEntity.ok().headers(headers).body("test"); 
+		try {
+			responseData = boardService.createBoard(createBoardReqDto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.internalServerError().body(responseData);
+		}
+		return ResponseEntity.ok().body(responseData); 
 //		return new ResponseEntity<>(title + "게시글 작성 성공", headers ,HttpStatus.BAD_REQUEST);
 	}
 	
