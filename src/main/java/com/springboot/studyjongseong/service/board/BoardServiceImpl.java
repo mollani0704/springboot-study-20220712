@@ -1,5 +1,8 @@
 package com.springboot.studyjongseong.service.board;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.management.RuntimeErrorException;
 
 import org.springframework.stereotype.Service;
@@ -33,8 +36,13 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public ReadBoardRespDto readBoardList(int page) throws Exception {
-		return null;
+	public List<ReadBoardRespDto> readBoardList(int page) throws Exception {
+		List<ReadBoardRespDto> BoardDtoList = new ArrayList<ReadBoardRespDto>();
+		boardRepository.getBoardListOfIndex((page - 1) * 10).forEach(board -> {
+			BoardDtoList.add(board.toReadBoardDto());
+		});
+		
+		return BoardDtoList;
 	}
 
 	@Override
@@ -48,9 +56,4 @@ public class BoardServiceImpl implements BoardService {
 		
 		return false;
 	}
-
-
-
-
-
 }

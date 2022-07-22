@@ -40,7 +40,7 @@
  		bm.usercode,
  		um.username,
  		bm.content,
- 		bm.createdate
+ 		bm.createdate,
  		bm.updatedate
  	from 
  		board_mst bm
